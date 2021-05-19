@@ -1,0 +1,11 @@
+version: '3.4'
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    entrypoint: bash -c "sleep infinity"
+    volumes:
+      - ./:/app
+    ports:
+      - 38888:80
