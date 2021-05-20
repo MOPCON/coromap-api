@@ -1,5 +1,6 @@
 import base64
 import re
+from operator import itemgetter
 from urllib.parse import unquote, urlparse
 
 import requests
@@ -22,7 +23,10 @@ def parse_data(data):
         open_time_change = data[8]
         prevention_measures = data[9]
     else:
-        locals().update(data)
+        url, open, inside, outside, delivery, discount, seat_change, open_time_change, \
+        prevention_measures = itemgetter('url', 'open', 'inside', 'outside', 'delivery',
+                                         'discount', 'seat_change', 'open_time_change',
+                                         'prevention_measures')(data)
 
     white_list = [
         'g.page',
