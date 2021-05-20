@@ -17,6 +17,8 @@ with open('storage/import.csv') as csvfile:
     body = {}
     for row in rows:
         uid, data = parse_data(row)
+        if uid is None:
+            continue
         body[uid] = data
     ref = db.reference('')
     ref.child('mapData').update(body)

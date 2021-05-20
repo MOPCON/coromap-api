@@ -24,6 +24,14 @@ def parse_data(data):
     else:
         locals().update(data)
 
+    white_list = [
+        'g.page',
+        'goo.gl',
+        'www.google.com',
+    ]
+    if urlparse(url).netloc not in white_list:
+        return None, None
+
     origin_url = requests.get(url, headers=headers)
     if '@' not in url:
         m = re.search(r'APP_INITIALIZATION_STATE=\[\[\[(.+?)]', origin_url.text)
