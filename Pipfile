@@ -8,6 +8,7 @@ fastapi = "*"
 uvicorn = "*"
 firebase-admin = "*"
 google-cloud-firestore = "*"
+beautifulsoup4 = "*"
 
 [dev-packages]
 
