@@ -16,7 +16,7 @@ firebase_admin.initialize_app(cred, {
 
 
 @app.post('/api/v1/stores', status_code=200)
-async def get_stores(request: Request, _: StoreData):
+async def update_stores(request: Request, _: StoreData):
     json_body = await request.json()
     uid, data = parse_data(json_body)
     if uid is None:
@@ -28,3 +28,8 @@ async def get_stores(request: Request, _: StoreData):
     return {
         'message': 'success'
     }
+
+
+@app.get('/health', status_code=200)
+def health():
+    return {'health': 'ok'}
