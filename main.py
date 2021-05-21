@@ -28,3 +28,8 @@ async def get_stores(request: Request, _: StoreData):
     return {
         'message': 'success'
     }
+
+
+@app.get('/health', status_code=200)
+def health():
+    return {'health': 'ok'}

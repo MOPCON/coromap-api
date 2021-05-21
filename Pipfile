@@ -9,6 +9,9 @@ uvicorn = "*"
 firebase-admin = "*"
 google-cloud-firestore = "*"
 beautifulsoup4 = "*"
+gunicorn = "*"
+uvloop = "*"
+httptools = "*"
 
 [dev-packages]
 
