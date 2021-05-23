@@ -12,6 +12,7 @@ beautifulsoup4 = "*"
 gunicorn = "*"
 uvloop = "*"
 httptools = "*"
+xxhash = "*"
 
 [dev-packages]
 

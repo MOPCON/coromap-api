@@ -4,6 +4,7 @@ from operator import itemgetter
 from urllib.parse import unquote, urlparse
 
 import requests
+import xxhash
 from bs4 import BeautifulSoup
 
 headers = {
@@ -49,9 +50,9 @@ def parse_data(data):
         latitude = path[4].split(',')[0].split('@')[1]
         longitude = path[4].split(',')[1]
         shop_name = unquote(path[3])
-    uid = base64.b64encode((shop_name + latitude + longitude).encode('utf-8'))
+    uid = xxhash.xxh64((shop_name + latitude + longitude).encode('utf-8')).hexdigest()
 
-    return uid.decode('ascii'), {
+    return uid, {
         'latitude': latitude,
         'longitude': longitude,
         'inside_status': seat_change,
