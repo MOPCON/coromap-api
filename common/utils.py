@@ -1,4 +1,4 @@
-import base64
+from datetime import datetime
 import re
 from operator import itemgetter
 from urllib.parse import unquote, urlparse
@@ -14,6 +14,7 @@ headers = {
 
 def parse_data(data):
     if isinstance(data, list):
+        last_updated_at = int(datetime.strptime(data[0], '%Y/%m/%d %H:%M:%S').timestamp())
         url = data[1]
         open = data[2]
         inside = data[3]
@@ -28,6 +29,10 @@ def parse_data(data):
         prevention_measures = itemgetter('url', 'open', 'inside', 'outside', 'delivery',
                                          'discount', 'seat_change', 'open_time_change',
                                          'prevention_measures')(data)
+        if 'last_updated_at' not in data:
+            last_updated_at = int(datetime.now().timestamp())
+        else:
+            last_updated_at = data['last_updated_at']
 
     white_list = [
         'g.page',
@@ -53,6 +58,7 @@ def parse_data(data):
     uid = xxhash.xxh64((shop_name + latitude + longitude).encode('utf-8')).hexdigest()
 
     return uid, {
+        'last_updated_at': last_updated_at,
         'latitude': latitude,
         'longitude': longitude,
         'inside_status': seat_change,

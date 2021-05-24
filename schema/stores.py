@@ -1,3 +1,6 @@
+from datetime import datetime
+from typing import Optional
+
 from pydantic import BaseModel, AnyHttpUrl, Field
 
 
@@ -6,6 +9,9 @@ class StoreData(BaseModel):
     Properties to create store
     """
     url: AnyHttpUrl
+    last_updated_at: Optional[datetime] = Field(
+        None, description='最後更新時間', example=1621867382
+    )
     open: str = Field(
         ..., description='是否繼續維持營業', example='是'
     )
