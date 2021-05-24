@@ -58,6 +58,7 @@ def parse_data(data):
     uid = xxhash.xxh64((shop_name + latitude + longitude).encode('utf-8')).hexdigest()
 
     return uid, {
+        'url': origin_url.url,
         'last_updated_at': last_updated_at,
         'latitude': latitude,
         'longitude': longitude,
