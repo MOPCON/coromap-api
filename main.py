@@ -6,12 +6,14 @@ from firebase_admin import db
 from firebase_admin import credentials
 
 from common.utils import parse_data
+from config import Settings
 from schema.stores import StoreData
 
+settings = Settings()
 app = FastAPI()
 cred = credentials.Certificate('storage/serviceAccount.json')
 firebase_admin.initialize_app(cred, {
-    'databaseURL': 'https://hash-map-default-rtdb.asia-southeast1.firebasedatabase.app'
+    'databaseURL': settings.firebase_url
 })
 
 
