@@ -1,0 +1,20 @@
+name: CI
+on:
+  push:
+    branches: [ staging ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - run: |
+          mkdir storage
+          echo "${{ secrets.STAGING_FIREBASE_KEY }}" | base64 -d > storage/serviceAccount.json
+      - id: deploy
+        uses: google-github-actions/deploy-appengine@main
+        with:
+          project_id: ${{ secrets.STAGING_PROJECT_ID }}
+          credentials: ${{ secrets.GCP_SA_STAGING_KEY }}
+      - id: test
+        run: curl "${{ steps.deploy.outputs.url }}/health"
