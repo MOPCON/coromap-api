@@ -13,6 +13,7 @@ gunicorn = "*"
 uvloop = "*"
 httptools = "*"
 xxhash = "*"
+pydantic = {extras = ["dotenv"], version = "*"}
 
 [dev-packages]
 

@@ -1,17 +1,28 @@
 from fastapi import Request, HTTPException  # pylint: disable=import-error
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 import firebase_admin
 from firebase_admin import db
 from firebase_admin import credentials
 
 from common.utils import parse_data
+from config import Settings
 from schema.stores import StoreData
 
+settings = Settings()
 app = FastAPI()
+origins = ["*"]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 cred = credentials.Certificate('storage/serviceAccount.json')
 firebase_admin.initialize_app(cred, {
-    'databaseURL': 'https://hash-map-default-rtdb.asia-southeast1.firebasedatabase.app'
+    'databaseURL': settings.firebase_url
 })
 
 
