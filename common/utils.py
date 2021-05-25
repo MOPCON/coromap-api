@@ -21,13 +21,13 @@ def parse_data(data):
         outside = data[4]
         delivery = data[5]
         discount = data[6]
-        seat_change = data[7]
+        inside_status = data[7]
         open_time_change = data[8]
         prevention_measures = data[9]
     else:
-        url, open, inside, outside, delivery, discount, seat_change, open_time_change, \
+        url, open, inside, outside, delivery, discount, inside_status, open_time_change, \
         prevention_measures = itemgetter('url', 'open', 'inside', 'outside', 'delivery',
-                                         'discount', 'seat_change', 'open_time_change',
+                                         'discount', 'inside_status', 'open_time_change',
                                          'prevention_measures')(data)
         if 'last_updated_at' not in data:
             last_updated_at = int(datetime.now().timestamp())
@@ -62,7 +62,7 @@ def parse_data(data):
         'last_updated_at': last_updated_at,
         'latitude': latitude,
         'longitude': longitude,
-        'inside_status': seat_change,
+        'inside_status': inside_status,
         'shop_name': shop_name,
         'prevention_measures': prevention_measures,
         'inside': True if inside == '是' else False or '',

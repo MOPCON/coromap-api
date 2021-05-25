@@ -27,7 +27,7 @@ class StoreData(BaseModel):
     discount: str = Field(
         ..., description='防疫外帶 / 外送優惠'
     )
-    seat_change: str = Field(
+    inside_status: str = Field(
         ..., description='內用座位調整情況'
     )
     open_time_change: str = Field(
