@@ -1,4 +1,4 @@
-# Open Street Map API
+# Coromap API
 
 ## About The Project
 
@@ -33,7 +33,7 @@
 
 ### Import data from csv
 
-The first initial data should be import by using csv file, But also can be added throw api for 
+The first initial data should be import by using csv file, But also can be added throw api for
 more detail please read the api document.
 ```shell
 python import.py
