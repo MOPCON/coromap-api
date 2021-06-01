@@ -13,7 +13,9 @@ gunicorn = "*"
 uvloop = "*"
 httptools = "*"
 xxhash = "*"
-pydantic = {extras = ["dotenv"], version = "*"}
+pydantic = {extras = ["dotenv"],version = "*"}
+pyproj = "*"
+simplejson = "*"
 
 [dev-packages]
 
