@@ -7,12 +7,14 @@ import requests
 import xxhash
 from bs4 import BeautifulSoup
 
+from common.geo_convert import GeoConvert
+
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36'
 }
 
 
-def parse_data(data):
+def parse_data(converter: GeoConvert, data):
     if isinstance(data, list):
         last_updated_at = int(datetime.strptime(data[0], '%Y/%m/%d %H:%M:%S').timestamp())
         url = data[1]
@@ -42,19 +44,24 @@ def parse_data(data):
     if urlparse(url).netloc not in white_list:
         return None, None
 
-    origin_url = requests.get(url, headers=headers)
     if '@' not in url:
-        m = re.search(r'APP_INITIALIZATION_STATE=\[\[\[(.+?)]', origin_url.text)
-        _, longitude, latitude = m.group(1).split(',')
-        title = BeautifulSoup(origin_url.text, 'html.parser').find('meta', property="og:title")
-        shop_name = unquote(title['content'].split('·')[0])
-        latitude = str(round(float(latitude), 7))
-        longitude = str(round(float(longitude), 7))
+        origin_url = requests.get(url, headers=headers)
+        # convert google map to tw language
+        url = origin_url.url + '&hl=zh-TW'
     else:
-        path = urlparse(origin_url.url).path.split('/')
-        latitude = path[4].split(',')[0].split('@')[1]
-        longitude = path[4].split(',')[1]
-        shop_name = unquote(path[3])
+        # convert google map to tw language
+        url = url + '?hl=zh-TW'
+    origin_url = requests.get(url, headers=headers)
+    title = BeautifulSoup(origin_url.text, 'html.parser').find('meta', property="og:title")
+    shop_name = unquote(title['content'].split(' · ')[0])
+    address = re.search(r'^[0-9]*(.*)', title['content'].split(' · ')[1]).group(1)
+    latitude, longitude = converter.tgos_by_spider(address)
+    if latitude is None and longitude is None:
+        # fall back if tgos can't resolve
+        _, longitude, latitude = re.search(
+            r'APP_INITIALIZATION_STATE=\[\[\[(.+?)]',
+            origin_url.text
+        ).group(1).split(',')
     uid = xxhash.xxh64((shop_name + latitude + longitude).encode('utf-8')).hexdigest()
 
     return uid, {
