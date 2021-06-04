@@ -20,11 +20,15 @@
 
 1. Get a service account credential json file from firebase.
 2. Put the credential json file in `storage/serviceAccount.json`
-3. Run docker-compose
+3. Add a new file called `.env` in your root directory
+    ```
+    FIREBASE_URL= /* put your firebase realtime database url */
+    ```
+4. Run docker-compose
     ```shell
     docker-compose up -d --build
     ```
-4. Access the health check api see if everything works fine.
+5. Access the health check api see if everything works fine.
     ```shell
     curl localhost:38888/health
     ```
