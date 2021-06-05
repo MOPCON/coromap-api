@@ -8,3 +8,4 @@ services:
       - ./:/app
     ports:
       - 38888:80
+    entrypoint: bash -c "/start-reload.sh"  
