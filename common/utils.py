@@ -40,6 +40,7 @@ def parse_data(converter: GeoConvert, data):
         'g.page',
         'goo.gl',
         'www.google.com',
+        'www.google.com.tw',
     ]
     if urlparse(url).netloc not in white_list:
         return None, None
@@ -53,6 +54,13 @@ def parse_data(converter: GeoConvert, data):
         url = url + '?hl=zh-TW'
     origin_url = requests.get(url, headers=headers)
     title = BeautifulSoup(origin_url.text, 'html.parser').find('meta', property="og:title")
+    if len(title['content'].split(' · ')) == 1:
+        # og:title = 'Google Maps'
+        uid = ''
+        return uid, {
+            'msg': '此網址無法取得正確資料，請改用短網址填寫'
+        }
+    
     shop_name = unquote(title['content'].split(' · ')[0])
     address = re.search(r'^[0-9]*(.*)', title['content'].split(' · ')[1]).group(1)
     latitude, longitude = converter.tgos_by_spider(address)

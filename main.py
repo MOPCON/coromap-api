@@ -34,6 +34,8 @@ async def update_stores(request: Request, _: StoreData):
     uid, data = parse_data(converter, json_body)
     if uid is None:
         raise HTTPException(status_code=400, detail='Data error')
+    if 'msg' in data:
+        raise HTTPException(status_code=400, detail=data['msg'])
     ref = db.reference('')
     ref.child('mapData').update({
         uid: data
