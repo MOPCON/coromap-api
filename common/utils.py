@@ -58,7 +58,7 @@ def parse_data(converter: GeoConvert, data):
         # og:title = 'Google Maps'
         uid = ''
         return uid, {
-            'msg': 'og:title problem'
+            'msg': '此網址無法取得正確資料，請改用短網址填寫'
         }
     
     shop_name = unquote(title['content'].split(' · ')[0])
