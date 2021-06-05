@@ -40,6 +40,7 @@ def parse_data(converter: GeoConvert, data):
         'g.page',
         'goo.gl',
         'www.google.com',
+        'www.google.com.tw',
     ]
     if urlparse(url).netloc not in white_list:
         return None, None
