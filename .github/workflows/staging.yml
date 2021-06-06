@@ -12,10 +12,10 @@ jobs:
           mkdir storage
           echo "${{ secrets.STAGING_FIREBASE_KEY }}" | base64 -d > storage/serviceAccount.json
           echo "FIREBASE_URL=${{ secrets.STAGING_FIREBASE_URL }}" > .env
-      - id: deploy
-        uses: google-github-actions/deploy-appengine@main
+      - name: deploy and delete previous version in Google App Engine
+        uses: vijayp23/deploy-gae-action@1.0.1
         with:
-          project_id: ${{ secrets.STAGING_PROJECT_ID }}
-          credentials: ${{ secrets.GCP_SA_STAGING_KEY }}
-      - id: test
-        run: curl "${{ steps.deploy.outputs.url }}/health"
+          service-account: ${{ secrets.GCP_SA_STAGING_KEY }}
+          project-id: ${{ secrets.STAGING_PROJECT_ID }}
+          config-files: './app.yaml'
+          delete-previous-versions: true
